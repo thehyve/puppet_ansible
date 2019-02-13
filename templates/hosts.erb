@@ -1,0 +1,10 @@
+<%# Ansible inventory file -%>
+<% @hosts.each do | host, parameters | -%>
+<%= host -%>
+<% parameters.each do | key, value | -%>
+<%= key -%>
+=
+<%= value -%>
+<% end -%>
+<%# should be new line %>
+<% end -%>
