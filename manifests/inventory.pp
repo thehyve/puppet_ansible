@@ -5,7 +5,7 @@ class ansible::inventory(
             'ansible_host' => 'localhost',
         },
     },
-    Hash[String, Array[String]] $ groups = {
+    Hash[String, Array[String]] $groups = {
         'localgroup' => [
             'localhost',
         ],
