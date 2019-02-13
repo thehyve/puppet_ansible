@@ -1,8 +1,8 @@
 <%# Ansible inventory file -%>
 <% @hosts.each do | host, parameters | -%>
-<%= host -%>
+<%= host -%> <%# add space -%>
 <% parameters.each do | key, value | -%>
 <%= key -%>=<%= value -%>
-<% end -%>
+<% end -%> <%# add space -%>
 <%# should be new line %>
 <% end -%>
