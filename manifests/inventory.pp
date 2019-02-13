@@ -6,6 +6,9 @@ class ansible::inventory(
         },
     },
 ) {
+    file{ '/etc/ansible':
+        ensure => directory,
+    }
     file{ '/etc/ansible/hosts':
         ensure => file,
         content => template('ansible/hosts.erb'),
