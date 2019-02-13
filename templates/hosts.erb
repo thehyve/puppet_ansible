@@ -6,3 +6,10 @@
 <% end -%>
 <%# should be new line %>
 <% end -%>
+<%# should be new line %>
+<% @groups.each do | group_name, group_list | -%>
+[<%= group_name -%>]
+<% group_list.each do | group_element | -%>
+<%= group_element %>
+<% end %>
+<% end %>

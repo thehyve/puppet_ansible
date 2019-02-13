@@ -5,6 +5,11 @@ class ansible::inventory(
             'ansible_host' => 'localhost',
         },
     },
+    Hash[String, Array[String]] $ groups = {
+        'localgroup' => [
+            'localhost',
+        ],
+    },
 ) {
     file{ '/etc/ansible':
         ensure => directory,
