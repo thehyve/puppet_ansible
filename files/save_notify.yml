@@ -1,0 +1,15 @@
+- name: save dump
+  copy:
+    content: "{{ db_dump.stdout }}"
+    dest: "{{ item.path }}"
+    force: no
+  delegate_to: localhost
+  register: dump_result
+- name: send notification e-mail
+  mail:
+    host: localhost
+    port: 25
+    subject: "pmc {{ inventory_hostname }} backup {{ dump_result.failed | ternary('failure', 'success') }}"
+    to: support <support@thehyve.nl>
+    body: "PMC {{ inventory_hostname }} - {{ item.path }} was {{ dump_result.failed | ternary('unsuccessfull', 'successfull') }}"
+  delegate_to: localhost

@@ -1,0 +1,45 @@
+---
+- hosts: localhost
+  vars_files:
+  - vars.yml
+  tasks:
+  - name: check backups filesystem
+    include_tasks: rotate.yml
+    loop:
+    - name: yearly
+      age: 156w
+    - name: monthly
+      age: 52w
+    - name: weekly
+      age: 5w
+    - name: daily
+      age: 1w
+    loop_control:
+      loop_var: outer_item
+
+- hosts: source
+  vars_files:
+  - vars.yml
+  tasks:
+  - name: create dump for keycloak
+    include_tasks: keycloak_dump.yml
+    when: inventory_hostname == "keycloak"
+  - name: create dump for cbioportal
+    include_tasks: cbio_dump.yml
+    when: inventory_hostname == "cbioportal"
+  - name: create dump for transmart
+    include_tasks: transmart_dump.yml
+    when: inventory_hostname == "transmart"
+  - name: save dump and notify
+    include_tasks: save_notify.yml
+    loop:
+    - path: "{{ staging_dir }}/daily/{{ inventory_hostname }}-{{ ansible_date_time.date }}.sql"
+      period: 1
+    - path: "{{ staging_dir }}/weekly/{{ inventory_hostname }}-{{ ansible_date_time.year }}-week-{{ ansible_date_time.weeknumber }}.sql"
+      period: "{{ ansible_date_time.weekday_number }}"
+    - path: "{{ staging_dir }}/monthly/{{ inventory_hostname }}-{{ ansible_date_time.year }}-month-{{ ansible_date_time.month }}.sql"
+      period: "{{ ansible_date_time.day }}"
+    - path: "{{ staging_dir }}/yearly/{{ inventory_hostname }}-{{ ansible_date_time.year }}.sql"
+      period: "{{ ansible_date_time.month }}"
+    when: item.period == 1
+...

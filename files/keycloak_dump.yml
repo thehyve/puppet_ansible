@@ -1,0 +1,7 @@
+- name: get container name
+  command: docker ps -f ancestor=postgres:{{ pg_version }} -q
+  register: container_name
+- name: dump database
+  command: docker exec -it -u {{ pg_user }} {{ container_name.stdout }} pg_dump -U {{ db_owner }} {{ db_name }}
+  register: db_dump
+  tags: dump

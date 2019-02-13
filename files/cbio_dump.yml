@@ -1,0 +1,7 @@
+- name: get container name
+  command: "docker ps -f ancestor=mysql:{{ mysql_version }} -q --no-trunc"
+  register: container_name
+- name: dump database
+  command: "docker exec -it {{ container_name.stdout }} mysqldump --password={{ db_pass }} --user {{ db_owner }} {{ db_name }}"
+  register: db_dump
+  tags: dump

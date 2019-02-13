@@ -1,0 +1,14 @@
+- name: "ensure if {{ outer_item.name }} folder exist"
+  file:
+    path: "{{ staging_dir }}/{{ outer_item.name }}"
+    state: directory
+- name: "find outdated {{ outer_item.name }} backups"
+  find:
+    age: "{{ outer_item.age }}"
+    path: "{{ staging_dir }}/{{ outer_item.name }}"
+  register: old_files
+- name: "remove backups older than {{ outer_item.age }}"
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ old_files.files }}"

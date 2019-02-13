@@ -1,0 +1,28 @@
+- name: create temporary file for local storage of database dump
+  tempfile:
+    state: file
+  register: temp_file
+  become: yes
+  become_user: postgres
+- name: dump transmart database
+  postgresql_db:
+    name: transmart
+    state: dump
+    target: "{{ temp_file.path }}"
+  become: yes
+  become_user: postgres
+  tags: dump
+- name: importing file contents to variable
+  slurp:
+    src: "{{ temp_file.path }}"
+  register: db_dump_b64
+  become: yes
+  become_user: postgres
+- name: delete temporary file
+  file:
+    name: "{{ temp_file.path }}"
+    state: absent
+- name: read content of dump
+  set_fact:
+    db_dump:
+      stdout: "{{ db_dump_b64.content | b64decode }}"
