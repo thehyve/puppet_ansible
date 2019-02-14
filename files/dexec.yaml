@@ -1,7 +1,7 @@
 ---
 - hosts: localhost
   vars_files:
-  - vars.yml
+  - pmc_vars.yml
   tasks:
   - name: check backups filesystem
     include_tasks: rotate.yml
@@ -19,7 +19,7 @@
 
 - hosts: source
   vars_files:
-  - vars.yml
+  - pmc_vars.yml
   tasks:
   - name: create dump for keycloak
     include_tasks: keycloak_dump.yml
