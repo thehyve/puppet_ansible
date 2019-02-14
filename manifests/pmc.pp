@@ -5,4 +5,8 @@ class ansible::pmc(
         ensure => file,
         content => template('ansible/pmc_vars.yml.erb'),
     }
+    file { '/var/lib/playbooks':
+        source => [
+            "puppet:///modules/ansible/*",
+        ],
 }
