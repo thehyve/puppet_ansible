@@ -9,4 +9,5 @@ class ansible::pmc(
         source => [
             "puppet:///modules/ansible/cbio_dump.yml",
         ],
+    }
 }
