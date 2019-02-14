@@ -10,4 +10,7 @@ class ansible::requirements(
             '--upgrade',
         ],
     }
+    file{ '/var/lib/playbooks':
+        ensure => directory,
+    }
 }
